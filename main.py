@@ -2,26 +2,31 @@ from menu import MENU
 from menu import resources
 
 # Global variables
-Water = 100.0
-Milk = 50.0
-Coffee = 76.0
-Money = 2.50
+money = 2.50
+
 
 # TODO: 1. Print report of all coffee machine resources
 def print_report():
-    print(f"Water: {Water}ml")
-    print(f"Milk: {Milk}ml")
-    print(f"Coffee: {Coffee}g")
-    print(f"Money: ${Money}")
+    print(f"Water: {resources["water"]}ml")
+    print(f"Milk: {resources["milk"]}ml")
+    print(f"Coffee: {resources["coffee"]}g")
+    print(f"Money: ${money}")
+
 
 # TODO: 2. Check resources sufficient to make drink order
 def check_resources(drink):
-    if drink == "espresso":
-        return True
-    if drink == "latte":
-        return True
-    else:
-        return True
+    drink_can_be_processed = True
+    if resources["water"] < MENU[drink]["ingredients"]["water"]:
+        print("Sorry there is not enough water")
+        drink_can_be_processed = False
+    if resources["coffee"] < MENU[drink]["ingredients"]["coffee"]:
+        print("Sorry there is not enough coffee")
+        drink_can_be_processed = False
+    if drink == "latte" or drink == "cappuccino":
+        if resources["milk"] < MENU[drink]["ingredients"]["milk"]:
+            print("Sorry there is not enough milk")
+            drink_can_be_processed = False
+    return drink_can_be_processed
 
 # TODO: 3. Process coins to pay for drink
 
@@ -35,12 +40,12 @@ while serve_coffee == True:
         print_report()
     elif get_choice == "off":
         serve_coffee = False
-    elif get_choice == "espresso" or "latte" or "cappuccino":
+    elif (get_choice == "espresso") or (get_choice == "latte") or (get_choice == "cappuccino"):
+        print(MENU["espresso"]["ingredients"]["water"])
         resource_sufficient = check_resources(get_choice)
-        if resource_sufficient == True:
+        if resource_sufficient:
             print("Coffee served")
         else:
             print("Unable to serve.")
     else:
         print("I don't understand. Please try again.")
-
